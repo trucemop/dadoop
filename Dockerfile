@@ -18,7 +18,7 @@ RUN yum --nogpgcheck localinstall /root/cdh3-repository-1.0-1.noarch.rpm -y
 
 RUN yum install hadoop-0.20.noarch -y
 
-#RUN yum install java-1.6.0-openjdk.x86_64 -y
+RUN yum install java-1.6.0-openjdk.x86_64 -y
 
 RUN echo "export JAVA_HOME=/usr/lib/jvm/jre-1.6.0-openjdk.x86_64/" >> ~/.bashrc
 
@@ -29,22 +29,20 @@ RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 
 RUN ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
 
-ADD ./start.sh /usr/local/bin/start.sh
 
-RUN chmod +x /usr/local/bin/start.sh
 
 RUN echo StrictHostKeyChecking=no >> /root/.ssh/config
 
 RUN cat /root/.ssh/*.pub >> /root/.ssh/authorized_keys
 
-RUN rm -f /usr/lib/hadoop/conf/core-site.xml
-ADD ./single-core-site.xml /usr/lib/hadoop/conf/core-site.xml
+ADD . /root/
 
-RUN rm -f /usr/lib/hadoop/conf/hdfs-site.xml
-ADD ./single-hdfs-site.xml /usr/lib/hadoop/conf/hdfs-site.xml
+RUN chmod +x /root/*
 
-RUN rm -f /usr/lib/hadoop/conf/mapred-site.xml
-ADD ./single-mapred-site.xml /usr/lib/hadoop/conf/mapred-site.xml
+RUN mv -f /root/start.sh /usr/local/bin/start.sh
+RUN mv -f /root/single-core-site.xml /etc/alternatives/hadoop-0.20-conf/core-site.xml
+RUN mv -f /root/single-hdfs-site.xml /etc/alternatives/hadoop-0.20-conf/core-site.xml
+RUN mv -f /root/single-mapred-site.xml /etc/alternatives/hadoop-0.20-conf/core-site.xml
 
 CMD start.sh
 
