@@ -9,8 +9,6 @@ RUN yum install -y openssh-clients.x86_64
 RUN mkdir /var/run/sshd
 
 EXPOSE 22
-EXPOSE 50070
-EXPOSE 50030
 
 RUN curl http://archive.cloudera.com/redhat/6/x86_64/cdh/cdh3-repository-1.0-1.noarch.rpm > /root/cdh3-repository-1.0-1.noarch.rpm
 
