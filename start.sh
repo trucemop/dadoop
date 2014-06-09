@@ -15,8 +15,7 @@ fi
 
 
 
-if ! hash hadoop 2>/dev/null; then
-	rm -rf ./tmp
+if [ ! -d "./tmp" ]; then
 	mkdir tmp
 	curl http://archive.cloudera.com/cdh/3/hadoop-0.20.2-cdh3u6.tar.gz > ./tmp/hadoop-0.20.2-cdh3u6.tar.gz
 	tar -xzvf ./tmp/hadoop-0.20.2-cdh3u6.tar.gz -C ./tmp/
