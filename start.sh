@@ -21,12 +21,16 @@ if [ ! -d "./tmp" ]; then
 	tar -xzvf ./tmp/hadoop-0.20.2-cdh3u6.tar.gz -C ./tmp/
 fi
 
-CONTAINER=`docker run -t -i -d hadoop-singlenode`
+CONTAINER=`docker run -t -i -d --dns 172.17.0.1 -h node hadoop-singlenode`
 
 export ADDRESS=`docker inspect $CONTAINER | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 echo ${ADDRESS}
 
 cat ./core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
+
+echo "-------------------------"
+echo Starting temporary shell.
+echo "-------------------------"
 
 bash
 
