@@ -9,13 +9,10 @@ if [ `docker images | grep cdh3 | wc -l` -eq "0" ] ; then
 	docker build --rm -t "cdh3" ${WORKING}/cdh3/
 fi
 
-if [ `docker images | grep hadoop-namenode | wc -l` -eq "0" ] ; then
-	docker build --rm -t "hadoop-namenode" ${WORKING}/multiname/
+if [ `docker images | grep hadoop-singlenode | wc -l` -eq "0" ] ; then
+	docker build --rm -t "hadoop-singlenode" ${WORKING}/single/
 fi
 
-if [ `docker images | grep hadoop-multinode | wc -l` -eq "0" ] ; then
-	docker build --rm -t "hadoop-multinode" ${WORKING}/multinode/
-fi
 
 
 if [ ! -d "${WORKING}/tmp" ]; then
@@ -26,19 +23,17 @@ fi
 
 ${WORKING}/stop.sh
 
-NAMENODE=`docker run -t -i -d --dns 172.17.0.1 -h namenode --name namenode hadoop-namenode`
+NODE=`docker run -t -i -d --dns 172.17.0.1 -h node hadoop-singlenode`
 
-docker run -t -i -d --dns 172.17.0.1 -h data0 hadoop-multinode
-
-export ADDRESS=`docker inspect $NAMENODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
-
+export ADDRESS=`docker inspect $NODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 echo ${ADDRESS}
 
-cat ${WORKING}/core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
+cat ./core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
 
 echo "-------------------------"
 echo Starting temporary shell.
 echo "-------------------------"
 
 bash --rcfile <(echo "PS1='hadoop$'") -i
+
 

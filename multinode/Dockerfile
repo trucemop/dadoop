@@ -11,10 +11,6 @@ RUN mv -f /root/multi-core-site.xml /etc/alternatives/hadoop-0.20-conf/core-site
 RUN mv -f /root/multi-hdfs-site.xml /etc/alternatives/hadoop-0.20-conf/hdfs-site.xml
 RUN mv -f /root/multi-mapred-site.xml /etc/alternatives/hadoop-0.20-conf/mapred-site.xml
 
-EXPOSE 50070
-EXPOSE 50030
-EXPOSE 50075
-EXPOSE 50060
-EXPOSE 9000
+EXPOSE 50070 50030 50075 50060 9000 9001
 
 CMD start.sh
