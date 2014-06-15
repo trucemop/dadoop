@@ -1,7 +1,5 @@
 FROM cdh3
 
-RUN yum install dnsmasq -y
-#RUN echo 'address="/namenode/172.17.0.2"' >> /etc/dnsmasq.d/0hosts
 RUN echo 'address="/data0/172.17.0.3"' >> /etc/dnsmasq.d/0hosts
 RUN echo 'user=root' >> /etc/dnsmasq.conf
 RUN echo 'listen-address=127.0.0.1' >> /etc/dnsmasq.conf
@@ -13,6 +11,9 @@ RUN echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 
+#serf things
+RUN wget -P /root/ https://dl.bintray.com/mitchellh/serf/0.6.1_linux_amd64.zip
+RUN unzip /root/0.6.1_linux_amd64.zip -d /usr/local/bin/
 
 ADD . /root/
 
@@ -25,6 +26,6 @@ RUN mv -f /root/multi-core-site.xml /etc/alternatives/hadoop-0.20-conf/core-site
 RUN mv -f /root/multi-hdfs-site.xml /etc/alternatives/hadoop-0.20-conf/hdfs-site.xml
 RUN mv -f /root/multi-mapred-site.xml /etc/alternatives/hadoop-0.20-conf/mapred-site.xml
 
-EXPOSE 50070 50030 50075 50060 9000 9001 8020 50010 50020 50090
+EXPOSE 50070 50030 50075 50060 9000 9001 8020 50010 50020 50090 7946
 
 CMD start.sh
