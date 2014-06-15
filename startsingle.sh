@@ -28,7 +28,9 @@ NODE=`docker run -t -i -d --dns 172.17.0.1 -h node hadoop-singlenode`
 export ADDRESS=`docker inspect $NODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 echo ${ADDRESS}
 
-cat ./core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
+cat ${WORKING}/core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
+cat ${WORKING}/mapred-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/mapred-site.xml
+
 
 echo "-------------------------"
 echo Starting temporary shell.

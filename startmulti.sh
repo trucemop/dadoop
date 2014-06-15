@@ -28,13 +28,15 @@ ${WORKING}/stop.sh
 
 NAMENODE=`docker run -t -i -d --dns 127.0.0.1 -h namenode --name namenode hadoop-namenode`
 
-docker run -t -i -d --dns 127.0.0.1 -h data0 hadoop-multinode
+docker run -t -i -d --dns 127.0.0.1 -h data0 --link namenode:namenode hadoop-multinode
 
 export ADDRESS=`docker inspect $NAMENODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 
 echo ${ADDRESS}
 
 cat ${WORKING}/core-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/core-site.xml
+cat ${WORKING}/mapred-site.xml | sed "s/REPLACEMEWITHIPADDRESS/${ADDRESS}/g" > $HADOOP_INSTALL/conf/mapred-site.xml
+
 
 echo "-------------------------"
 echo Starting temporary shell.
