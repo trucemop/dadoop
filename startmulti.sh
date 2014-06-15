@@ -27,6 +27,10 @@ fi
 mkdir -p ./tmp/namenode
 mkdir -p ./tmp/data0
 
+if [ `docker ps -a | grep namenode | wc -l` -ne "0" ] ; then
+	docker rm -f namenode
+fi
+
 NAMENODE=`docker run -t -i -d --dns 172.17.0.1 -h namenode --name namenode hadoop-namenode`
 
 docker run -t -i -d --dns 172.17.0.1 -h data0 hadoop-multinode
