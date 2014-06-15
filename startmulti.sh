@@ -26,9 +26,9 @@ fi
 
 ${WORKING}/stop.sh
 
-NAMENODE=`docker run -t -i -d --dns 172.17.0.1 -h namenode --name namenode hadoop-namenode`
+NAMENODE=`docker run -t -i -d --dns 127.0.0.1 -h namenode --name namenode hadoop-namenode`
 
-docker run -t -i -d --dns 172.17.0.1 -h data0 hadoop-multinode
+docker run -t -i -d --dns 127.0.0.1 -h data0 hadoop-multinode
 
 export ADDRESS=`docker inspect $NAMENODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 
