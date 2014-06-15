@@ -2,6 +2,7 @@ FROM cdh3
 
 RUN yum install dnsmasq -y
 RUN echo 'address="/namenode/172.17.0.2"' >> /etc/dnsmasq.d/0hosts
+RUN echo 'address="/data0/172.17.0.3"' >> /etc/dnsmasq.d/0hosts
 RUN echo 'user=root' >> /etc/dnsmasq.conf
 RUN echo 'listen-address=127.0.0.1' >> /etc/dnsmasq.conf
 RUN echo 'resolv-file=/etc/resolv.dnsmasq.conf' >> /etc/dnsmasq.conf
