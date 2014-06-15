@@ -2,6 +2,11 @@
 
 service sshd start
 
+ADDRESS=`ifconfig eth0 | grep "inet addr" | awk '{print $2}' | cut -d":" -f2`
+NAME=`hostname`
+
+echo address=\"/${HOSTNAME}/${ADDRESS}\" >> /etc/dnsmasq.d/0hosts
+
 service dnsmasq start
 
 runuser -l hadoop -c 'hadoop namenode -format'
