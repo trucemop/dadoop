@@ -42,5 +42,5 @@ echo "-------------------------"
 echo Starting temporary shell.
 echo "-------------------------"
 
-bash --rcfile <(echo "PS1='hadoop$'") -i
+env PS1="hadoop$" /bin/bash --norc -i
 
