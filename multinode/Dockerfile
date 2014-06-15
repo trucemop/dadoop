@@ -10,6 +10,9 @@ RUN echo 'conf-dir=/etc/dnsmasq.d' >> /etc/dnsmasq.conf
 RUN echo 'nameserver 8.8.8.8' >> /etc/resolv.dnsmasq.conf
 RUN echo 'nameserver 8.8.4.4' >> /etc/resolv.dnsmasq.conf
 
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
+
 
 ADD . /root/
 
