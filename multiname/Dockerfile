@@ -1,6 +1,5 @@
 FROM cdh3
 
-RUN echo 'address="/data0/172.17.0.3"' >> /etc/dnsmasq.d/0hosts
 RUN echo 'user=root' >> /etc/dnsmasq.conf
 RUN echo 'listen-address=127.0.0.1' >> /etc/dnsmasq.conf
 RUN echo 'resolv-file=/etc/resolv.dnsmasq.conf' >> /etc/dnsmasq.conf
@@ -26,6 +25,6 @@ RUN mv -f /root/multi-core-site.xml /etc/alternatives/hadoop-0.20-conf/core-site
 RUN mv -f /root/multi-hdfs-site.xml /etc/alternatives/hadoop-0.20-conf/hdfs-site.xml
 RUN mv -f /root/multi-mapred-site.xml /etc/alternatives/hadoop-0.20-conf/mapred-site.xml
 
-EXPOSE 50070 50030 50075 50060 9000 9001 8020 50010 50020 50090 7946
+EXPOSE 50070 50030 50075 50060 9000 9001 8020 50010 50020 50090 7946 7373
 
 CMD start.sh
