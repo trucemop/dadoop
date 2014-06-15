@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-export WORKING=$(dirname $0)
+export BASE=$(dirname $0)
+cd ${BASE}
+export WORKING=`pwd -P`
 export HADOOP_USER_NAME=hadoop
 export HADOOP_INSTALL=${WORKING}/tmp/hadoop-0.20.2-cdh3u6
 export PATH=${HADOOP_INSTALL}/bin:$PATH
