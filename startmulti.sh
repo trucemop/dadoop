@@ -6,6 +6,7 @@ export WORKING=`pwd -P`
 export HADOOP_USER_NAME=hadoop
 export HADOOP_INSTALL=${WORKING}/tmp/hadoop-0.20.2-cdh3u6
 export PATH=${HADOOP_INSTALL}/bin:$PATH
+export NUM_NODES=`if [[ -z "$1" ]];then echo 1;else echo $1;fi`
 
 if [ `docker images | grep cdh3 | wc -l` -eq "0" ] ; then
 	docker build --rm -t "cdh3" ${WORKING}/cdh3/
@@ -33,8 +34,10 @@ export ADDRESS=`docker inspect $NAMENODE | grep "IPAddress" | awk '{print $2}' |
 
 echo ${ADDRESS}
 
+for NUM in `seq 1 $NUM_NODES`; do
+	docker run -t -i -d --dns 127.0.0.1 -e NAMENODE=${ADDRESS} -h data$NUM --link namenode:namenode hadoop-multinode
+done
 
-docker run -t -i -d --dns 127.0.0.1 -e NAMENODE=${ADDRESS} -h data0 --link namenode:namenode hadoop-multinode
 
 
 
