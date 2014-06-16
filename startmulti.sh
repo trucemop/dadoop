@@ -29,10 +29,18 @@ fi
 
 ${WORKING}/stop.sh
 
+if [ ! -f "${WORKING}/multiname/key" ] || [ ! -f "${WORKING}/multiname/key.pub" ] ; then
+        rm -f ${WORKING}/multiname/key ${WORKING}/multiname/key.pub
+        ssh-keygen -f ${WORKING}/multiname/key -t rsa -N ''
+fi
+
+
 NAMENODE=`docker run -t -i -d --dns 127.0.0.1 -h namenode --name namenode hadoop-namenode`
 export ADDRESS=`docker inspect $NAMENODE | grep "IPAddress" | awk '{print $2}' | sed -e 's/\"//g' -e 's/,//g'`
 
 echo ${ADDRESS}
+
+ssh-keygen -R ${ADDRESS}
 
 for NUM in `seq 1 $NUM_NODES`; do
 	docker run -t -i -d --dns 127.0.0.1 -e NAMENODE=${ADDRESS} -h data$NUM --link namenode:namenode hadoop-multinode

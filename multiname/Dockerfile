@@ -14,6 +14,12 @@ RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 RUN wget -P /root/ https://dl.bintray.com/mitchellh/serf/0.6.1_linux_amd64.zip
 RUN unzip /root/0.6.1_linux_amd64.zip -d /usr/local/bin/
 
+ADD key.pub /home/hadoop/.ssh/
+RUN cat /home/hadoop/.ssh/key.pub >> /home/hadoop/.ssh/authorized_keys
+RUN chown -R hadoop /home/hadoop/.ssh
+RUN chmod 600 /home/hadoop/.ssh/authorized_keys
+RUN chmod 644 /home/hadoop/.ssh/key.pub
+
 ADD . /root/
 
 RUN chmod 755 /root/*
