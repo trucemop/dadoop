@@ -22,7 +22,7 @@ fi
 
 
 if [ ! -d "${WORKING}/tmp" ]; then
-	mkdir tmp
+	mkdir ${WORKING}/tmp
 	curl http://archive.cloudera.com/cdh/3/hadoop-0.20.2-cdh3u6.tar.gz > ${WORKING}/tmp/hadoop-0.20.2-cdh3u6.tar.gz
 	tar -xzvf ${WORKING}/tmp/hadoop-0.20.2-cdh3u6.tar.gz -C ${WORKING}/tmp/
 fi
